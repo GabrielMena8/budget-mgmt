@@ -3,6 +3,7 @@ import BudgetForm from "./Components/BudgetForm"
 import Header from "./Components/Header"
 import { useBudget } from "./hooks/useBudget"
 import BudgetTracker from "./Components/BudgetTracker";
+import Modal from "./Components/Modal";
 
 function App() {  
   const {state} = useBudget();
@@ -22,6 +23,13 @@ function App() {
               <BudgetForm />
             )}
         </div>
+        {isvalid && (
+          <main className="max-w-3xl mx-auto p-10">
+           <Modal />
+          </main>
+        )
+          }
+        
     </>
   )
 }

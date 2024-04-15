@@ -1,27 +1,35 @@
 
-export type BudgetActions = {
-    type: 'ADD_BUDGET',
-    payload: {budget: number}
-}
+export type BudgetActions = 
+{type: 'ADD_BUDGET', payload: {budget: number}} |
+{type: 'SHOW_MODAL'}
 
 export type BudgetState = {
-    budget: number;
+    budget: number,
+    modal: boolean
 }
 
 export const initialState : BudgetState = {
-    budget: 0
+    budget: 0,
+    modal: false
 }
 
 export const budgetReducer = 
-        (state: BudgetState, action: BudgetActions):
-         BudgetState => {
+(state: BudgetState, action: BudgetActions) => {
     switch (action.type) {
         case 'ADD_BUDGET':
             return {
                 ...state,
                 budget: action.payload.budget
             }
+
+
+
+        case 'SHOW_MODAL':
+            return {
+                ...state,
+                modal: !state.modal
+            }
         default:
-            return state;
+            return state
     }
 }
