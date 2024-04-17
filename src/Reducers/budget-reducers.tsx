@@ -6,7 +6,9 @@ export type BudgetActions =
 {type: 'SHOW_MODAL'}  |
 {type: 'ADD_EXPENSE', payload: {expense: DraftExpense} } |
 {type: 'DELETE_EXPENSE', payload: {id: Expense['id']}}  |
-{type: 'GET_EXPENSE', payload: {id: Expense['id']}}
+{type: 'GET_EXPENSE', payload: {id: Expense['id']}} |
+{type: 'EDIT_EXPENSE', payload: {expense: Expense}} |
+{type: 'RESET'}
 
 
 
@@ -75,7 +77,24 @@ export const budgetReducer =
                 modal: !state.modal
 
             }
+        
+        case 'EDIT_EXPENSE':
+            return {
+                ...state,
+                expenses: state.expenses.map(expense => {
+                    if(expense.id === action.payload.expense.id){
+                        return action.payload.expense
+                    }
+                    return expense
+                }),
+                editingId: '',
+                modal: !state.modal
+            }
 
+        case 'RESET':
+            return initialState
+        
+        
             
 
         

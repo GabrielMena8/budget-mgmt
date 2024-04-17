@@ -1,4 +1,5 @@
-import { useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import {categories} from '../data/db.ts'
 import { Value, DraftExpense} from '../types/index.ts'
 import DatePicker from 'react-date-picker'
@@ -14,13 +15,22 @@ import { useBudget } from '../hooks/useBudget.ts';
 export default function ExpenseForm() {
 
     
-    const {dispatch} = useBudget()
+    const {dispatch, state} = useBudget()
     const [expense, setExpense] = useState<DraftExpense>({
         name: '',
         amount: 0,
         category: '',
         date: new Date()
     })
+
+    useEffect(() => {
+        if(state.editingId){
+            const editing = state.expenses.filter(current => current.id === state.editingId)[0]
+            setExpense(editing)
+            console.log(editing)
+        }
+    }, [state.editingId])
+
 
     const [error, setError] = useState<string>('')
 
@@ -52,7 +62,17 @@ export default function ExpenseForm() {
               setError('All fields are required')
               return
         }
-        dispatch({type: 'ADD_EXPENSE', payload: {expense}})
+
+        if(state.editingId){
+            dispatch({type: 'EDIT_EXPENSE', payload: {expense: {id: state.editingId, ...expense}}})
+
+            return
+        } else{
+            dispatch({type: 'ADD_EXPENSE', payload: {expense}})
+
+        }
+
+       
         setError('')
         setExpense({
             name: '',
@@ -106,6 +126,7 @@ export default function ExpenseForm() {
                 name='amount'
                 placeholder='Amount'
                 onChange={handleExpense}
+                max={9999}
             />
         </div>
         <div className='mb-4'>
