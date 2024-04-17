@@ -1,8 +1,8 @@
-import React from 'react'
+
 
 
 type AmountDisplayProps = {
-    label : string,
+    label : string | null,
     amount : number
 }
 
@@ -17,7 +17,10 @@ export default function AmountDisplay({label, amount}: AmountDisplayProps) {
 
   return (
     <p className='text-2xl font-bold uppercase text-sky-500'>
-        {label}: <span className='font-bold text-black' > {formatCurrency(amount)} </span>
+
+        {label && `${label}:` }
+        <span className='font-bold text-black' > {formatCurrency(amount)} </span>
+    
     </p>
 
   )

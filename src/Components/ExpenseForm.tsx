@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import {categories} from '../data/db.ts'
-import {Expense, Category, Value, DraftExpense} from '../types/index.ts'
+import { Value, DraftExpense} from '../types/index.ts'
 import DatePicker from 'react-date-picker'
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import Error from './Error.tsx'
 
+import { useBudget } from '../hooks/useBudget.ts';
 
 
 
 
 export default function ExpenseForm() {
 
+    
+    const {dispatch} = useBudget()
     const [expense, setExpense] = useState<DraftExpense>({
         name: '',
         amount: 0,
@@ -49,7 +52,16 @@ export default function ExpenseForm() {
               setError('All fields are required')
               return
         }
+        dispatch({type: 'ADD_EXPENSE', payload: {expense}})
         setError('')
+        setExpense({
+            name: '',
+            amount: 0,
+            category: '',
+            date: new Date()
+        })
+
+        dispatch({type: 'SHOW_MODAL'})
 
     }
 
@@ -108,7 +120,7 @@ export default function ExpenseForm() {
                 onChange={handleExpense}
             >
             <option value=''>-- Select --</option>
-            {categories.map((category: Category) => (
+            {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                 {category.name}
                 </option>

@@ -1,9 +1,9 @@
-import React from 'react'
+
 import AmountDisplay from './AmountDisplay'
 import { useBudget } from '../hooks/useBudget'
 
 export default function BudgetTracker() {
-    const {state} = useBudget();
+    const {state, dispatch} = useBudget();
   return (
 
     <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
@@ -13,7 +13,11 @@ export default function BudgetTracker() {
         <div className="flex flex-col justify-center items-center gap-8">
             <button
                 className='bg-pink-500 w-full hover:bg-pink-700 text-white font-bold py-2 px-4 rounded'    
-            type="button">Reset
+            type="button"
+            onClick={() => {
+                dispatch({type: 'RESET'})
+            }}
+            >Reset
             </button>
 
             <AmountDisplay 
